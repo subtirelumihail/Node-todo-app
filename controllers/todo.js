@@ -1,8 +1,9 @@
 const { Todo } = require("$models");
 
 const create = async (req, res) => {
+  console.log(req.ctx);
   try {
-    const todo = await Todo.create(req.body);
+    const todo = await Todo.create({ ...req.body, userId: req.ctx.user.id });
     return res.status(201).json({
       todo,
     });
@@ -15,7 +16,7 @@ const findOne = async (req, res) => {
   try {
     const { id } = req.params;
     const todo = await Todo.findOne({
-      where: { id: id },
+      where: { id: id, userId: req.ctx.user.id },
     });
     if (todo) {
       return res.status(200).json({ todo });
@@ -33,7 +34,9 @@ const findAll = async (req, res) => {
   try {
     // #TODO: implement pagination
 
-    let where = {};
+    let where = {
+      userId: req.ctx.user.id,
+    };
     if (req.query.status == "completed") {
       where.completed = true;
     }
@@ -55,7 +58,7 @@ const update = async (req, res) => {
   try {
     const { id } = req.params;
     const [updated] = await Todo.update(req.body, {
-      where: { id: id },
+      where: { id: id, userId: req.ctx.user.id },
     });
     if (updated) {
       const updatedTodo = await Todo.findOne({ where: { id: id } });
@@ -74,7 +77,7 @@ const deleteFn = async (req, res) => {
   try {
     const { id } = req.params;
     const deleted = await Todo.destroy({
-      where: { id: id },
+      where: { id: id, userId: req.ctx.user.id },
     });
     if (deleted) {
       return res.status(200).json({
