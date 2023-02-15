@@ -5,7 +5,7 @@ const login = async (req, res, next) => {
   passport.authenticate("login", async (err, user, info) => {
     try {
       if (info && (err || !user)) {
-        return res.json(info);
+        return res.status(401).json(info);
       }
 
       req.login(user, { session: false }, async (error) => {
