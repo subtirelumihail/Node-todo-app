@@ -1,7 +1,6 @@
 const { Todo } = require("$models");
 
 const create = async (req, res) => {
-  console.log(req.ctx);
   try {
     const todo = await Todo.create({ ...req.body, userId: req.ctx.user.id });
     return res.status(201).json({
