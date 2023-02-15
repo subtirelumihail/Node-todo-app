@@ -32,7 +32,19 @@ const findOne = async (req, res) => {
 const findAll = async (req, res) => {
   try {
     // #TODO: implement pagination
-    const todos = await Todo.findAll();
+
+    let where = {};
+    if (req.query.status == "completed") {
+      where.completed = true;
+    }
+    if (req.query.status == "incomplete") {
+      where.completed = false;
+    }
+
+    const todos = await Todo.findAll({
+      order: [["id", "DESC"]],
+      where,
+    });
     return res.status(200).json({ todos });
   } catch (error) {
     return res.status(500).send(error.message);

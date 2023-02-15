@@ -27,7 +27,6 @@ passport.use(
 
         return done(null, user);
       } catch (error) {
-        console.log(error?.errors[0].message);
         return done(null, false, {
           message: error?.errors[0]?.message,
           key: error?.errors[0]?.message.replace(/ /g, "."),
