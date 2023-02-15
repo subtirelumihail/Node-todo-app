@@ -20,7 +20,10 @@ const findOne = async (req, res) => {
     if (todo) {
       return res.status(200).json({ todo });
     }
-    return res.status(404).send("Todo with the specified ID does not exists");
+    return res.status(404).json({
+      message: "Todo doesn't exist",
+      key: "todo.not.found",
+    });
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -28,6 +31,7 @@ const findOne = async (req, res) => {
 
 const findAll = async (req, res) => {
   try {
+    // #TODO: implement pagination
     const todos = await Todo.findAll();
     return res.status(200).json({ todos });
   } catch (error) {
@@ -45,7 +49,10 @@ const update = async (req, res) => {
       const updatedTodo = await Todo.findOne({ where: { id: id } });
       return res.status(200).json({ todo: updatedTodo });
     }
-    throw new Error("Todo not found");
+    return res.status(404).json({
+      message: "Todo doesn't exist",
+      key: "todo.not.found",
+    });
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -58,9 +65,15 @@ const deleteFn = async (req, res) => {
       where: { id: id },
     });
     if (deleted) {
-      return res.status(204).send("Todo deleted");
+      return res.status(200).json({
+        message: "Todo has been deleted",
+        key: "todo.deleted",
+      });
     }
-    throw new Error("Todo not found");
+    return res.status(404).json({
+      message: "Todo doesn't exist",
+      key: "todo.not.found",
+    });
   } catch (error) {
     return res.status(500).send(error.message);
   }

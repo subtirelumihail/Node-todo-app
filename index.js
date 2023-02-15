@@ -1,11 +1,10 @@
 require("sexy-require");
-require("dotenv").config();
 
 const express = require("express");
 const routes = require("./routes");
 const bodyParser = require("body-parser");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 1337;
 const app = express();
 
 require("./auth");
