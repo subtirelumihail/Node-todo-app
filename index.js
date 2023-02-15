@@ -1,16 +1,17 @@
 require("sexy-require");
+require("./auth");
 
 const express = require("express");
-const routes = require("./routes");
 const bodyParser = require("body-parser");
+const morgan = require("morgan");
+const routes = require("./routes");
 
 const PORT = process.env.PORT || 1337;
 const app = express();
 
-require("./auth");
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(morgan("tiny"));
 
 app.use("/api", routes);
 
