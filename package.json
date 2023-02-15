@@ -7,8 +7,8 @@
     "start": "nodemon index.js",
     "seed": "sequelize-cli db:seed:all",
     "migrate": "sequelize-cli db:migrate",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "db:reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
+    "db:init": "npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "db:reset": "npx sequelize-cli db:drop && npm run db:init"
   },
   "author": "",
   "license": "ISC",
